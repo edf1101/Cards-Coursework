@@ -19,7 +19,8 @@ public class Pack {
    *
    * @param n    The number of players. There should be 8*n total cards.
    * @param path The path to the file containing the cards.
-   * @throws IOException If the file is not found or cannot be read.
+   * @throws IOException           If the file is not found or cannot be read.
+   * @throws NumberFormatException If the file contains invalid card values.
    */
   public Pack(int n, String path)
       throws IOException, NumberFormatException {
@@ -79,3 +80,5 @@ public class Pack {
     return returnVal;
   }
 }
+
+

@@ -9,7 +9,7 @@ package main;
  */
 public class Card {
 
-  public final int denomination;
+  private final int denomination;
 
   /**
    * Constructor for the Card class.

@@ -1,7 +1,10 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.io.*;
 
 /**
  * This class represents a pack of cards in the card game. All file reading / error checking is
@@ -44,7 +47,8 @@ public class Pack {
 
     // Check if the number of cards is correct
     if (readValues.size() != 8 * n) {
-      throw new IOException("Invalid number of cards in file. Expected " + 8 * n + " got " + readValues.size());
+      throw new IOException("Invalid number of cards in file. Expected "
+          + 8 * n + " got " + readValues.size());
     }
 
     cards = new Card[8 * n];

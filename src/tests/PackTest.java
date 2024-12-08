@@ -1,5 +1,7 @@
 package tests;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,8 +13,24 @@ import java.io.IOException;
 
 /**
  * This class tests the Pack class.
+ * <p>
+ * These tests involve file IO, I don't want to include test files in the solution,
+ * so I will create a test file then read that in then later delete it.
  */
 public class PackTest {
+
+  /**
+   * Set up and tear down methods to create and delete a test file.
+   */
+  @After
+  @Before
+  public void setUpTearDown() {
+    // Delete a test file
+    try {
+      new java.io.File("testingPack.txt").delete();
+    } catch (Exception e) {
+    }
+  }
 
   /**
    * Test the constructor with an invalid file name.
@@ -32,8 +50,11 @@ public class PackTest {
    */
   @Test
   public void testConstructor() {
+    String[] cardValues = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+    createTestingPack(cardValues);
+
     try {
-      Pack pack = new Pack(2, "demoPacks/demoPackValid.txt");
+      Pack pack = new Pack(2, "testingPack.txt");
     } catch (Exception e) {
       fail("Should not have thrown any errors for a valid pack");
     }
@@ -46,7 +67,9 @@ public class PackTest {
    */
   @Test
   public void getCards() throws IOException {
-    Pack pack = new Pack(2, "demoPacks/demoPackValid.txt");
+    String[] cardValues = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+    createTestingPack(cardValues);
+    Pack pack = new Pack(2, "testingPack.txt");
 
     // Expect simply 16 cards from 1 to 16
     Card[] expectedCards = {new Card(1), new Card(2), new Card(3),
@@ -63,13 +86,29 @@ public class PackTest {
   }
 
   /**
+   * Test the getPlayerCount method.
+   *
+   * @throws IOException If the file is not found or cannot be read. This should not happen in this
+   */
+  @Test
+  public void testGetPlayerCount() throws IOException {
+    String[] cardValues = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+    createTestingPack(cardValues);
+    Pack pack = new Pack(2, "testingPack.txt");
+
+    assertEquals(2, pack.getPlayerCount());
+  }
+
+  /**
    * Test the toString method.
    *
    * @throws IOException If the file is not found or cannot be read. This should not happen in this
    */
   @Test
   public void testToString() throws IOException {
-    Pack pack = new Pack(2, "demoPacks/demoPackValid.txt");
+    String[] cardValues = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+    createTestingPack(cardValues);
+    Pack pack = new Pack(2, "testingPack.txt");
 
     // Expect simply 16 cards from 1 to 16
     Card[] expectedCards = {new Card(1), new Card(2), new Card(3),
@@ -93,7 +132,9 @@ public class PackTest {
 
     // Test a pack with the wrong number of cards
     try {
-      new Pack(4, "demoPacks/demoPackBadLength.txt");
+      String[] validCards = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
+      createTestingPack(validCards);
+      new Pack(4, "testingPack.txt");
       fail("Should have thrown an IOException for invalid pack length");
     } catch (IllegalArgumentException e) {
       // This is what we expect
@@ -101,7 +142,9 @@ public class PackTest {
 
     // Test a pack with a NaN card
     try {
-      new Pack(4, "demoPacks/demoPackNaN.txt");
+      String[] invalidCards = {"a", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+      createTestingPack(invalidCards);
+      new Pack(4, "testingPack.txt");
       fail("Should have thrown an NumberFormatException for a number not being an int");
     } catch (IOException e) {
       fail("Should have thrown an NumberFormatException for a number not being an int");
@@ -111,7 +154,9 @@ public class PackTest {
 
     // Test a pack with a negative int card
     try {
-      new Pack(4, "demoPacks/demoPackNegativeNums.txt");
+      String[] invalidCards = {"-1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
+      createTestingPack(invalidCards);
+      new Pack(4, "testingPack.txt");
       fail("Card class should have thrown an IllegalArgumentException for a number not being a positive int");
     } catch (IOException | NumberFormatException e) {
       fail("Card class should have thrown an IllegalArgumentException for a number not being a positive int");
@@ -120,5 +165,23 @@ public class PackTest {
 
     }
 
+  }
+
+  /**
+   * Create a testingPack file from a deck of cards.
+   *
+   * @param cards The cards to write to the file.
+   */
+  private void createTestingPack(String[] cards) {
+    try {
+      java.io.File file = new java.io.File("testingPack.txt");
+      java.io.PrintWriter output = new java.io.PrintWriter(file);
+      for (String card : cards) {
+        output.println(card);
+      }
+      output.close();
+    } catch (Exception e) {
+      fail("Could not create a testing pack");
+    }
   }
 }

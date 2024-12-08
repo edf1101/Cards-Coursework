@@ -1,6 +1,13 @@
 package main;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 /**
  * This class represents the 4 card deck surrounding each player.
@@ -10,7 +17,7 @@ import java.util.ArrayList;
  */
 public class Deck {
   private final int deckId;
-  private final ArrayList<Card> deck = new ArrayList<>();
+  private final CopyOnWriteArrayList<Card> deck = new CopyOnWriteArrayList<>();
 
 
   /**
@@ -20,6 +27,15 @@ public class Deck {
    */
   public Deck(int deckId) {
     this.deckId = deckId;
+  }
+
+  /**
+   * Getter for the deckId of the deck.
+   *
+   * @return The deckId of the deck.
+   */
+  public int getDeckId() {
+    return deckId;
   }
 
   /**
@@ -87,5 +103,29 @@ public class Deck {
    */
   public boolean canTakeCard() {
     return deck.size() >= 4;
+  }
+
+  /**
+   * This method logs the state of the deck to a file.
+   * Used at the end of a game.
+   */
+  public void logDeck() {
+    String log = "Deck " + deckId + " contents: ";
+    for (Card card : deck) {
+      log += card.getDenomination() + " ";
+    }
+
+
+    String path = "gameData/deck" + deckId + ".txt";
+    File f = new File(path);
+    f.getParentFile().mkdirs(); // make sure the directory exists
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+      writer.write(log);
+      writer.close();
+    } catch (IOException e) {
+      // This should never happen since we created the file just before
+      System.out.println("Error creating log file for deck " + deckId);
+    }
   }
 }

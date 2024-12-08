@@ -1,9 +1,13 @@
 package main;
 
-import java.util.ArrayList;
+import java.io.BufferedWriter;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * This is the thread safe player class.
@@ -14,10 +18,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Player implements Runnable {
 
   private final int playerNumber;
-  private final ArrayList<Card> hand = new ArrayList<>();
+  private final CopyOnWriteArrayList<Card> hand = new CopyOnWriteArrayList<>();
   private final Deck pickupDeck;
   private final Deck discardDeck;
   private final AtomicInteger winnerNumber;
+
+  private String log = "";
 
   /**
    * Constructor for the player class.
@@ -61,7 +67,7 @@ public class Player implements Runnable {
    *
    * @return True if the player has won, false otherwise.
    */
-  public boolean checkWin() {
+  public synchronized boolean checkWin() {
     // TODO error checking if the hand is empty (not set up yet)
 
     // Checks if there are any cards that are different. If so, the player has not won.
@@ -80,11 +86,43 @@ public class Player implements Runnable {
    * when a player has won.
    */
   public void run() {
+    // Write initial hand to log
+    log += "Player " + playerNumber + "'s initial hand is: ";
+    for (Card card : hand) {
+      log += card.getDenomination() + " ";
+    }
+    log += "\n";
+
     while (winnerNumber.get() == -1) {
       if (checkWin()) {
         break;
       }
       takeTurn();
+    }
+
+    // Write the winner to the log
+    log += "Player " + winnerNumber.get() + " has informed player "
+        + playerNumber + " that player " + winnerNumber.get() + " has won";
+    discardDeck.logDeck(); // each player logging their discard deck will mean all decks are logged
+
+    writeLog();
+  }
+
+  /**
+   * This function writes the player's log to a file.
+   * This will all be done at once to avoid the log being written to multiple times which is slow.
+   */
+  public void writeLog() {
+    String path = "gameData/player" + playerNumber + ".txt";
+    File f = new File(path);
+    f.getParentFile().mkdirs(); // make sure the directory exists
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+      writer.write(log);
+      writer.close();
+    } catch (IOException e) {
+      // This should never happen since we created the file just before
+      System.out.println("Error creating log file for player " + playerNumber);
     }
   }
 
@@ -93,7 +131,7 @@ public class Player implements Runnable {
    */
   private void takeTurn() {
     synchronized (Player.class) { // To keep in sync with all other Player class instances.
-      if (!pickupDeck.canTakeCard()) {
+      if (!pickupDeck.canTakeCard() || !discardDeck.canAddCard()) {
         return;
       }
 
@@ -112,7 +150,19 @@ public class Player implements Runnable {
       hand.remove(discardCard);
       discardDeck.addCard(discardCard);
 
-      hand.add(pickupDeck.removeCard()); // pickup card
+      Card drawnCard = pickupDeck.removeCard();
+      hand.add(drawnCard); // pickup card
+
+      // Write to log
+      log += "Player " + playerNumber + " draws a " + drawnCard.getDenomination() +
+          " from deck " + pickupDeck.getDeckId() + "\n";
+      log += "Player " + playerNumber + " discards " + discardCard + " to deck " +
+          discardDeck.getDeckId() + "\n";
+      log += "Player " + playerNumber + "'s current hand is: ";
+      for (Card card : hand) {
+        log += card.getDenomination() + " ";
+      }
+      log += "\n";
     }
   }
 

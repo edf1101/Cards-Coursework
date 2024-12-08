@@ -88,6 +88,7 @@ public class CardGame {
     while (winnerNumber.get() == -1) {
       // wait for the game to finish
     }
+
     return winnerNumber.get();
   }
 
@@ -103,7 +104,7 @@ public class CardGame {
     String filename = "testPack.txt";
 
     int tot = 0;
-    int c = 500;
+    int c = 10;
     for (int i = 0; i < c; i++) {
 
       CardGame game = new CardGame(n, filename);

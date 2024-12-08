@@ -1,13 +1,13 @@
 package main;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * This is the thread safe player class.
@@ -63,12 +63,15 @@ public class Player implements Runnable {
   }
 
   /**
-   * Check if this player has won or not.
+   * Check if this player has won or not. The edge case of an empty hand is handled as False.
    *
    * @return True if the player has won, false otherwise.
    */
   public synchronized boolean checkWin() {
-    // TODO error checking if the hand is empty (not set up yet)
+
+    if (hand.size() != 4) { // Check that hand must be full to win
+      return false;
+    }
 
     // Checks if there are any cards that are different. If so, the player has not won.
     for (Card card : hand) {
@@ -77,6 +80,7 @@ public class Player implements Runnable {
       }
     }
     // If the player has got here, then all cards are the same, so they have won.
+    System.out.println("Player " + playerNumber + " has won!");
     winnerNumber.set(playerNumber);
     return true;
   }
@@ -101,8 +105,17 @@ public class Player implements Runnable {
     }
 
     // Write the winner to the log
-    log += "Player " + winnerNumber.get() + " has informed player "
-        + playerNumber + " that player " + winnerNumber.get() + " has won";
+    if (winnerNumber.get() == playerNumber) {
+      log += "Player " + playerNumber + " wins\n";
+    } else {
+      log += "Player " + winnerNumber.get() + " has informed player "
+          + playerNumber + " that player " + winnerNumber.get() + " has won\n";
+    }
+    log += "Player " + playerNumber + " exits\n";
+    log += "Player " + playerNumber + "'s final hand is: ";
+    for (Card card : hand) {
+      log += card.getDenomination() + " ";
+    }
     discardDeck.logDeck(); // each player logging their discard deck will mean all decks are logged
 
     writeLog();
@@ -131,7 +144,7 @@ public class Player implements Runnable {
    */
   private void takeTurn() {
     synchronized (Player.class) { // To keep in sync with all other Player class instances.
-      if (!pickupDeck.canTakeCard() || !discardDeck.canAddCard()) {
+      if (!pickupDeck.canDrawCard() || !discardDeck.canGiveCard() || hand.size() != 4) {
         return;
       }
 
@@ -154,10 +167,10 @@ public class Player implements Runnable {
       hand.add(drawnCard); // pickup card
 
       // Write to log
-      log += "Player " + playerNumber + " draws a " + drawnCard.getDenomination() +
-          " from deck " + pickupDeck.getDeckId() + "\n";
-      log += "Player " + playerNumber + " discards " + discardCard + " to deck " +
-          discardDeck.getDeckId() + "\n";
+      log += "Player " + playerNumber + " draws a " + drawnCard.getDenomination()
+          + " from deck " + pickupDeck.getDeckId() + "\n";
+      log += "Player " + playerNumber + " discards " + discardCard + " to deck "
+          + discardDeck.getDeckId() + "\n";
       log += "Player " + playerNumber + "'s current hand is: ";
       for (Card card : hand) {
         log += card.getDenomination() + " ";
@@ -173,9 +186,9 @@ public class Player implements Runnable {
    */
   @Override
   public String toString() {
-    String returnString = "Player " + playerNumber + "Hand: ";
+    String returnString = "Player " + playerNumber + " Hand: ";
     for (Card card : hand) {
-      returnString += " " + card;
+      returnString += card.getDenomination() + " ";
     }
     return returnString;
   }

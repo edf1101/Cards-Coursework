@@ -1,6 +1,8 @@
 package main;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -17,20 +19,22 @@ public class CardGame {
 
   private final Card[] gameCards;
 
-  private AtomicInteger winnerNumber = new AtomicInteger(-1);
+  private final AtomicInteger winnerNumber;
 
   /**
    * Constructor for the CardGame class.
    *
-   * @param n    number of players.
-   * @param path Path to deck file.
+   * @param inputPack The pack to play with.
    * @throws IOException           If the file is not found or cannot be read.
    * @throws NumberFormatException If the file contains invalid card values.
    */
-  private CardGame(int n, String path) throws IOException {
+  private CardGame(IPack inputPack) throws IOException {
+
+    winnerNumber = new AtomicInteger(-1);
+
     // Read the pack and get the cards from it.
-    Pack gamePack = new Pack(n, path);
-    gameCards = gamePack.getCards();
+    gameCards = inputPack.getCards();
+    int n = inputPack.getPlayerCount();
 
     // Create the decks & player objects.
     gameDecks = new Deck[n];
@@ -62,7 +66,7 @@ public class CardGame {
 
     // deal cards to the decks
     for (int i = 0; i < (n * 4); i++) {
-      gameDecks[(i % n)].addCard(gameCards[(n * 4) + i]);
+      gameDecks[(i % n)].dealCard(gameCards[(n * 4) + i]);
     }
   }
 
@@ -92,6 +96,24 @@ public class CardGame {
     return winnerNumber.get();
   }
 
+  /**
+   * This checks if a String represents a valid integer for the player count of the game.
+   *
+   * @param n The string to check.
+   * @return The integer if valid, else -1
+   */
+  private static int validateInputSize(String n) {
+    try {
+      int num = Integer.parseInt(n);
+      if (num < 1) {
+        return -1;
+      }
+      return num;
+    } catch (NumberFormatException e) {
+      return -1;
+    }
+  }
+
 
   /**
    * This method runs the threaded game.
@@ -100,24 +122,29 @@ public class CardGame {
    * @throws IOException If the file is not found or cannot be read.
    */
   public static void main(String[] args) throws IOException {
-    int n = 22;
-    String filename = "testPack.txt";
 
-    int tot = 0;
-    int c = 10;
-    for (int i = 0; i < c; i++) {
-
-      CardGame game = new CardGame(n, filename);
-      game.playGame();
-
-      int res = game.winnerNumber.get();
-      System.out.println("Winner: " + res);
-      tot += res;
+    // Get the number of players from input.
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Enter the number of players: ");
+    int n = validateInputSize(scanner.nextLine());
+    while (n == -1) {
+      System.out.println("Invalid input. Please enter a positive integer: ");
+      n = validateInputSize(scanner.nextLine());
     }
-    float avg = (float) tot / (float) c;
-    System.out.println("Avg " + avg);
 
+    // get the file path from input.
+    System.out.println("Enter the file path for the pack: ");
+    String path = scanner.nextLine();
+
+    // Create the game and play it.
+    try {
+      CardGame game = new CardGame(new Pack(n, path));
+      game.playGame();
+    } catch (FileNotFoundException e) {
+      System.out.println("File not found. Exiting...");
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    }
   }
-
 }
 

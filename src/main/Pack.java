@@ -13,9 +13,11 @@ import java.util.ArrayList;
  * @author 730003140 & 7300049916
  * @version 1.0
  */
-public class Pack {
+public class Pack implements IPack {
 
   private final Card[] cards;
+
+  private final int playerCount;
 
   /**
    * Constructor for the Pack class.
@@ -47,7 +49,7 @@ public class Pack {
 
     // Check if the number of cards is correct
     if (readValues.size() != 8 * n) {
-      throw new IOException("Invalid number of cards in file. Expected "
+      throw new IllegalArgumentException("Invalid number of cards in file. Expected "
           + 8 * n + " got " + readValues.size());
     }
 
@@ -56,6 +58,8 @@ public class Pack {
     for (int i = 0; i < readValues.size(); i++) {
       cards[i] = new Card(readValues.get(i));
     }
+
+    playerCount = n;
   }
 
   /**
@@ -65,6 +69,15 @@ public class Pack {
    */
   public Card[] getCards() {
     return cards;
+  }
+
+  /**
+   * Get how many players in the pack.
+   *
+   * @return Player count.
+   */
+  public int getPlayerCount() {
+    return playerCount;
   }
 
   /**

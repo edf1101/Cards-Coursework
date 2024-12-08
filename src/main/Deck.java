@@ -1,13 +1,11 @@
 package main;
 
 import java.io.BufferedWriter;
-import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class represents the 4 card deck surrounding each player.
@@ -54,6 +52,17 @@ public class Deck {
   }
 
   /**
+   * This method deals a card to the deck.
+   * The difference between this and {@link #addCard(Card)} is that this method adds to the top
+   * of the deck, not the bottom.
+   *
+   * @param card The card to add to the deck.
+   */
+  public void dealCard(Card card) {
+    deck.add(card);
+  }
+
+  /**
    * Remove a card from the top of the deck (last index).
    *
    * @return The card removed from the deck. Or null if the deck is empty.
@@ -88,20 +97,20 @@ public class Deck {
   }
 
   /**
-   * Returns whether a player can add a card. Check it isn't full.
+   * Returns whether a player can add a card to the deck. Check it isn't full.
    *
    * @return True if deck size <= 4.
    */
-  public boolean canAddCard() {
+  public boolean canGiveCard() {
     return deck.size() <= 4;
   }
 
   /**
-   * Returns whether a player can take a card. Check it is full.
+   * Returns whether a player can Draw a card from this deck. Check it is full.
    *
    * @return True if deck size >= 4.
    */
-  public boolean canTakeCard() {
+  public boolean canDrawCard() {
     return deck.size() >= 4;
   }
 

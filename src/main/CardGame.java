@@ -25,10 +25,8 @@ public class CardGame {
    * Constructor for the CardGame class.
    *
    * @param inputPack The pack to play with.
-   * @throws IOException           If the file is not found or cannot be read.
-   * @throws NumberFormatException If the file contains invalid card values.
    */
-  private CardGame(IPack inputPack) throws IOException {
+  private CardGame(IPack inputPack) {
 
     winnerNumber = new AtomicInteger(-1);
 

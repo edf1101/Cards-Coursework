@@ -57,8 +57,6 @@ public class Player implements Runnable {
    * @param card The card to be added to the player's hand.
    */
   public void addCard(Card card) {
-
-    // TODO have some error throwing here if the hand is full, or dodgy card
     hand.add(card);
   }
 

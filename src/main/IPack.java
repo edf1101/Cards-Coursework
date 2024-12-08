@@ -5,6 +5,9 @@ import java.io.IOException;
 /**
  * This is an interface for the pack class.
  * This is so that we can create mock classes.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
  */
 public interface IPack {
 

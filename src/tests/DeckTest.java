@@ -14,6 +14,9 @@ import java.lang.reflect.Field;
 
 /**
  * This class tests the Deck class.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
  */
 public class DeckTest {
 

@@ -6,6 +6,9 @@ import main.IPack;
 /**
  * This is a mockPack class where we can set the cards ourselves
  * without reading from a file.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
  */
 public class MockPack implements IPack {
 

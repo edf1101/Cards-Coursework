@@ -13,6 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
+/**
+ * This class tests the CardGame class.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
+ */
 public class CardGameTest {
 
   /**
@@ -30,6 +36,9 @@ public class CardGameTest {
     assertEquals(-1, method.invoke(null, "abc")); // Test with invalid input "abc"
   }
 
+  /**
+   * Test the constructor for the CardGame class.
+   */
   @Test
   public void testConstructor() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
 
@@ -65,7 +74,7 @@ public class CardGameTest {
   }
 
   /**
-   * This tests the dealCards private method
+   * This tests the dealCards private method.
    */
   @Test
   public void testDealCards() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {

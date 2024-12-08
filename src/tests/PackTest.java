@@ -16,6 +16,9 @@ import java.io.IOException;
  * <p>
  * These tests involve file IO, I don't want to include test files in the solution,
  * so I will create a test file then read that in then later delete it.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
  */
 public class PackTest {
 

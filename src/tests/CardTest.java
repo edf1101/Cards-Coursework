@@ -3,10 +3,14 @@ package tests;
 import main.Card;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
  * This class tests the Card class.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
  */
 public class CardTest {
 

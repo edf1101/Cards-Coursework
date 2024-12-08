@@ -10,13 +10,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class contains helper functions for the tests.
+ *
+ * @author 730003140 & 7300049916
+ * @version 1.0
  */
 public class HelperFunctions {
   /**
-   * This helpful function gets the private hand field from the player class.
+   * This helpful function gets the private hand field from the {@link Player} class.
    *
-   * @param player The player object to get the hand field from.
-   * @return The ArrayList of Card hand field from the deck object. Null if error (shouldn't happen).
+   * @param player The {@link Player} object to get the hand field from.
+   * @return The ArrayList of {@link Card} hand field from the deck object. Null if error (shouldn't happen).
    */
   public static ArrayList<Card> getPlayerCards(Player player) {
     // Create Field object
@@ -38,9 +41,9 @@ public class HelperFunctions {
   }
 
   /**
-   * This helpful function gets the private log field from the player class.
+   * This helpful function gets the private log field from the {@link Player} class.
    *
-   * @param player The player object to get the log field from.
+   * @param player The {@link Player} object to get the log field from.
    * @return The Log string, or null if can't find (should never happen).
    */
   public static String getPlayerLog(Player player) {
@@ -60,9 +63,9 @@ public class HelperFunctions {
   }
 
   /**
-   * This helpful function gets the private log field from the player class.
+   * This helpful function sets the private log field from the {@link Player} class.
    *
-   * @param player The player object to get the log field from.
+   * @param player The {@link Player} object to set the log field from.
    * @param newVal The new value to set the log field to.
    * @return The Log string, or null if can't find (should never happen).
    */
@@ -82,7 +85,7 @@ public class HelperFunctions {
   /**
    * This helper function resets the player's hand to an empty hand.
    *
-   * @param player The player object to reset the hand of.
+   * @param player The {@link Player} object to reset the hand of.
    */
   public static void resetPlayerHand(Player player) {
     try {
@@ -125,10 +128,10 @@ public class HelperFunctions {
   }
 
   /**
-   * This helpful function gets the private deck field from the Deck class.
+   * This helpful function gets the private deck field from the {@link Deck} class.
    *
-   * @param deck The deck object to get the deck field from.
-   * @return The ArrayList<Card> deck field from the deck object. Null if error (shouldn't happen).
+   * @param deck The {@link Deck} object to get the deck field from.
+   * @return The ArrayList {@link Card} deck field from the {@link Deck} object. Null if error (shouldn't happen).
    */
   public static ArrayList<Card> getDeckCards(Deck deck) {
     // Create Field object

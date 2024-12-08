@@ -1,5 +1,11 @@
 # project specific files
 /gameData
+/Submission
+/Submission/gameData
+testPack1.txt
+testPack.txt
+/Submission/testPack.txt
+/Submission/testPack1.txt
 
 # Compiled class file
 *.class

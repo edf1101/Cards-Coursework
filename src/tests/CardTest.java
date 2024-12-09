@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  */
 public class CardTest {
 
-  Card validCard;
+  private Card validCard;
 
   /**
    * Set up a valid card for testing.
@@ -43,5 +43,17 @@ public class CardTest {
     assertEquals("Card of Value: 5", validCard.toString());
   }
 
+  /**
+   * This tests that the card cannot be created with a negative denomination.
+   */
+  @Test
+  public void testNegativeDenomination() {
+    try {
+      Card invalidCard = new Card(-1);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertTrue(true);
+    }
+  }
 
 }

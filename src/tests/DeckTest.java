@@ -21,8 +21,13 @@ import java.lang.reflect.Field;
 public class DeckTest {
 
 
+  private Deck testDeck;
+
   @Before
   public void setUp() {
+    // create a test deck
+    testDeck = new Deck(1);
+
     // Delete any test files from previous tests
     java.io.File file = new java.io.File("gameData/deck101.txt");
     file.delete();
@@ -33,11 +38,11 @@ public class DeckTest {
    */
   @Test
   public void addCard() {
-    Deck deck = new Deck(1);
-    Card card = new Card(1);
-    deck.addCard(card);
 
-    ArrayList<Card> deckCards = HelperFunctions.getDeckCards(deck);
+    Card card = new Card(1);
+    testDeck.addCard(card);
+
+    ArrayList<Card> deckCards = HelperFunctions.getDeckCards(testDeck);
     assert deckCards != null;
     assertEquals(1, deckCards.size());
     assertEquals(card, deckCards.get(0));
@@ -49,28 +54,27 @@ public class DeckTest {
    */
   @Test
   public void removeCard() {
-    Deck deck = new Deck(1);
     Card card1 = new Card(1);
     Card card2 = new Card(2);
 
     // as you add cards to the bottom the card array now is [card2, card1]
-    deck.addCard(card1);
-    deck.addCard(card2);
+    testDeck.addCard(card1);
+    testDeck.addCard(card2);
 
     // we remove cards from the top of the deck so the card returned should be card1
-    Card removedCard = deck.removeCard();
+    Card removedCard = testDeck.removeCard();
     assertEquals(card1, removedCard);
     assertEquals(1, removedCard.getDenomination());
 
-    ArrayList<Card> deckCards = HelperFunctions.getDeckCards(deck);
+    ArrayList<Card> deckCards = HelperFunctions.getDeckCards(testDeck);
     assert deckCards != null;
     assertEquals(1, deckCards.size());
     assertEquals(card2, deckCards.get(0));
     assertEquals(2, card2.getDenomination());
 
     // Test removing from an empty deck. Should return null.
-    deck = new Deck(2);
-    assertNull(deck.removeCard());
+    testDeck = new Deck(2);
+    assertNull(testDeck.removeCard());
 
 
   }
@@ -80,8 +84,7 @@ public class DeckTest {
    */
   @Test
   public void getDeckId() {
-    Deck deck = new Deck(1);
-    assertEquals(1, deck.getDeckId());
+    assertEquals(1, testDeck.getDeckId());
   }
 
   /**
@@ -90,13 +93,11 @@ public class DeckTest {
   @Test
   public void testToString() {
     // Test toString with normal deck
-    Deck testDeck = new Deck(1);
     Card card1 = new Card(1);
     Card card2 = new Card(2);
     Card card3 = new Card(3);
     Card card4 = new Card(4);
 
-    testDeck = new Deck(1);
     testDeck.addCard(card1);
     testDeck.addCard(card2);
     testDeck.addCard(card3);
@@ -119,19 +120,18 @@ public class DeckTest {
   public void testCanDrawCard() {
 
     // create a deck and add 4 cards
-    Deck deck = new Deck(1);
-    deck.addCard(new Card(1));
-    deck.addCard(new Card(2));
-    deck.addCard(new Card(3));
-    deck.addCard(new Card(4));
+    testDeck.addCard(new Card(1));
+    testDeck.addCard(new Card(2));
+    testDeck.addCard(new Card(3));
+    testDeck.addCard(new Card(4));
 
-    assertTrue(deck.canDrawCard());
-    deck.removeCard();
-    assertFalse(deck.canDrawCard());
+    assertTrue(testDeck.canDrawCard());
+    testDeck.removeCard();
+    assertFalse(testDeck.canDrawCard());
 
     // Test edge case with 0 cards
-    deck = new Deck(2);
-    assertFalse(deck.canDrawCard());
+    testDeck = new Deck(2);
+    assertFalse(testDeck.canDrawCard());
   }
 
   /**
@@ -142,30 +142,29 @@ public class DeckTest {
   public void testCanGiveCard() {
 
     // create a deck and add 4 cards
-    Deck deck = new Deck(1);
-    deck.addCard(new Card(1));
-    deck.addCard(new Card(2));
-    deck.addCard(new Card(3));
-    deck.addCard(new Card(4));
-    deck.addCard(new Card(5));
+    testDeck.addCard(new Card(1));
+    testDeck.addCard(new Card(2));
+    testDeck.addCard(new Card(3));
+    testDeck.addCard(new Card(4));
+    testDeck.addCard(new Card(5));
 
-    assertFalse(deck.canGiveCard()); // now length is 5 so can't give a card
-    deck.removeCard();
+    assertFalse(testDeck.canGiveCard()); // now length is 5 so can't give a card
+    testDeck.removeCard();
 
-    assertTrue(deck.canGiveCard()); // now length is 4 so can give a card (EDGE CASE)
+    assertTrue(testDeck.canGiveCard()); // now length is 4 so can give a card (EDGE CASE)
 
-    deck.removeCard();
-    assertTrue(deck.canGiveCard()); // now length is 3 so can give a card
+    testDeck.removeCard();
+    assertTrue(testDeck.canGiveCard()); // now length is 3 so can give a card
 
     // Test extreme case with 0 cards
-    deck = new Deck(2);
-    assertTrue(deck.canGiveCard());
+    testDeck = new Deck(2);
+    assertTrue(testDeck.canGiveCard());
 
     // test edge case of more than full deck
     for (int i = 0; i < 5; i++) {
-      deck.addCard(new Card(i));
+      testDeck.addCard(new Card(i));
     }
-    assertFalse(deck.canGiveCard());
+    assertFalse(testDeck.canGiveCard());
   }
 
   /**
@@ -174,15 +173,14 @@ public class DeckTest {
   @Test
   public void testDeckLogNormal() {
     // Create an example deck to log
-    Deck deck = new Deck(101);
-    deck.dealCard(new Card(1));
-    deck.dealCard(new Card(2));
-    deck.dealCard(new Card(3));
-    deck.logDeck();
+    testDeck.dealCard(new Card(1));
+    testDeck.dealCard(new Card(2));
+    testDeck.dealCard(new Card(3));
+    testDeck.logDeck();
 
     // should now be saved to file - read it to check
-    String expectedPath = "gameData/deck101.txt";
-    String expectedContents = "Deck 101 contents: 1 2 3 ";
+    String expectedPath = "gameData/deck1.txt";
+    String expectedContents = "Deck 1 contents: 1 2 3 ";
 
     // assert file exists
     assertTrue(new java.io.File(expectedPath).exists());

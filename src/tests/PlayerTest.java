@@ -8,6 +8,7 @@ import main.Deck;
 import main.Player;
 import main.Card;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -131,7 +132,6 @@ public class PlayerTest {
    */
   @Test
   public void testWriteLog() {
-
     // Test writing an empty log
     String log = HelperFunctions.getPlayerLog(testPlayer);
     assertEquals("", log);
@@ -331,7 +331,7 @@ public class PlayerTest {
    * This method tests the run method, when it instantly wins.
    */
   @Test
-  public void testRunInstantWin() {
+  public void testRunInstantWin() throws IOException{
 
     testPlayer.addCard(new Card(1));
     testPlayer.addCard(new Card(1));

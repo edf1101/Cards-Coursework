@@ -2,6 +2,7 @@ package main;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -81,14 +82,20 @@ public class CardGame {
       }
     }
 
+    ArrayList<Thread> threads = new ArrayList<>();
     // start all player threads
     for (Player player : gamePlayers) {
       Thread playerThread = new Thread(player);
+      threads.add(playerThread);
       playerThread.start();
     }
 
     while (winnerNumber.get() == -1) {
       // wait for the game to finish
+    }
+
+    for (Thread thread : threads) {
+      thread.interrupt();
     }
 
     return winnerNumber.get();

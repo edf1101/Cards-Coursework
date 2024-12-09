@@ -69,7 +69,7 @@ public class PackTest {
    * @throws IOException If the file is not found or cannot be read. This should not happen in this
    */
   @Test
-  public void getCards() throws IOException {
+  public void testGetCards() throws IOException {
     String[] cardValues = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
     createTestingPack(cardValues);
     Pack pack = new Pack(2, "testingPack.txt");

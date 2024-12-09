@@ -50,7 +50,7 @@ public class PlayerTest {
    * This method tests the getPlayerNumber method.
    */
   @Test
-  public void getPlayerNumber() {
+  public void testGetPlayerNumber() {
     // Test the getPlayerNumber method
     // recreate the testPlayer since we are testing something that is changed in the constructor
 
@@ -70,7 +70,7 @@ public class PlayerTest {
    * This method tests the addCard method.
    */
   @Test
-  public void addCard() {
+  public void testAddCard() {
     // Test the addCard method
     assertEquals(0, HelperFunctions.getPlayerCards(testPlayer).size());
 
@@ -88,7 +88,7 @@ public class PlayerTest {
    * This method tests the checkWin method.
    */
   @Test
-  public void checkWin() {
+  public void testCheckWin() {
     // Test the edge case at the start where the player has no cards
     assertEquals(HelperFunctions.getPlayerCards(testPlayer).size(), 0);
     assertFalse(testPlayer.checkWin());

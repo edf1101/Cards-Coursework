@@ -37,7 +37,7 @@ public class DeckTest {
    * Test adding a card to the deck and checking if it was added.
    */
   @Test
-  public void addCard() {
+  public void testAddCard() {
 
     Card card = new Card(1);
     testDeck.addCard(card);
@@ -53,7 +53,7 @@ public class DeckTest {
    * Test removing cards to the deck and checking if they were removed.
    */
   @Test
-  public void removeCard() {
+  public void testRemoveCard() {
     Card card1 = new Card(1);
     Card card2 = new Card(2);
 
@@ -83,7 +83,7 @@ public class DeckTest {
    * Test getting the deckId of the deck.
    */
   @Test
-  public void getDeckId() {
+  public void testGetDeckId() {
     assertEquals(1, testDeck.getDeckId());
   }
 
@@ -129,9 +129,10 @@ public class DeckTest {
     testDeck.removeCard();
     assertFalse(testDeck.canDrawCard());
 
-    // Test edge case with 0 cards
+    // Test extreme case with 0 cards
     testDeck = new Deck(2);
     assertFalse(testDeck.canDrawCard());
+
   }
 
   /**

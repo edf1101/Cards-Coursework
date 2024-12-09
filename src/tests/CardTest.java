@@ -31,7 +31,7 @@ public class CardTest {
    * Test that the denomination is correctly set, we set it as 5.
    */
   @Test
-  public void getDenomination() {
+  public void testGetDenomination() {
     assertEquals(5, validCard.getDenomination());
   }
 

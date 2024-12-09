@@ -141,14 +141,14 @@ public class Player implements Runnable {
    * This function contains the code run each turn a player takes.
    */
   private void takeTurn() {
+    Card drawnCard = null;
+    Card discardCard = null;
     synchronized (Player.class) { // To keep in sync with all other Player class instances.
       if (!pickupDeck.canDrawCard() || !discardDeck.canGiveCard() || hand.size() != 4) {
         return;
       }
 
       // select card to discard
-      Card discardCard = null;
-
       for (Card card : hand) {
         if (card.getDenomination() != playerNumber) {
           discardCard = card;
@@ -161,20 +161,20 @@ public class Player implements Runnable {
       hand.remove(discardCard);
       discardDeck.addCard(discardCard);
 
-      Card drawnCard = pickupDeck.removeCard();
+      drawnCard = pickupDeck.removeCard();
       hand.add(drawnCard); // pickup card
-
-      // Write to log
-      log += "Player " + playerNumber + " draws a " + drawnCard.getDenomination()
-          + " from deck " + pickupDeck.getDeckId() + "\n";
-      log += "Player " + playerNumber + " discards " + discardCard + " to deck "
-          + discardDeck.getDeckId() + "\n";
-      log += "Player " + playerNumber + "'s current hand is: ";
-      for (Card card : hand) {
-        log += card.getDenomination() + " ";
-      }
-      log += "\n";
     }
+    // Write to log
+    log += "Player " + playerNumber + " draws a " + drawnCard.getDenomination()
+        + " from deck " + pickupDeck.getDeckId() + "\n";
+    log += "Player " + playerNumber + " discards " + discardCard + " to deck "
+        + discardDeck.getDeckId() + "\n";
+    log += "Player " + playerNumber + "'s current hand is: ";
+    for (Card card : hand) {
+      log += card.getDenomination() + " ";
+    }
+    log += "\n";
+
   }
 
   /**

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * This class represents a pack of cards in the card game. All file reading / error checking is
  * done here to abstract complexity from the main game class.
  *
- * @author 730003140 & 7300049916
+ * @author 730003140 & 730049916
  * @version 1.0
  */
 public class Pack implements IPack {

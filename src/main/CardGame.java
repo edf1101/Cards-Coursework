@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This is the card game class.
  *
- * @author 730003140 & 7300049916
+ * @author 730003140 & 730049916
  * @version 1.0
  */
 public class CardGame {

@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * This class represents the 4 card deck surrounding each player.
  *
- * @author 730003140 & 7300049916
+ * @author 730003140 & 730049916
  * @version 1.0
  */
 public class Deck {

@@ -4,7 +4,7 @@ package main;
  * This class represents a card in the game It only needs to hold the denomination
  * and some quality of life functions.
  *
- * @author 730003140 & 7300049916
+ * @author 730003140 & 730049916
  * @version 1.0
  */
 public class Card {
